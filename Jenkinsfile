@@ -37,3 +37,13 @@ pipeline {
         }
     }
 }
+stage('Test') {
+    steps {
+        bat 'copy sample-app\\test-results.xml test-results.xml'
+    }
+    post {
+        always {
+            junit 'test-results.xml'
+        }
+    }
+}
