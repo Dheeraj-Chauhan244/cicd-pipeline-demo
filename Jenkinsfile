@@ -11,9 +11,19 @@ pipeline {
 
         stage('Setup') {
             steps {
-                echo 'Setting up environment...'
                 bat 'node --version'
                 bat 'docker --version'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                bat 'copy sample-app\\test-results.xml test-results.xml'
+            }
+            post {
+                always {
+                    junit 'test-results.xml'
+                }
             }
         }
 
@@ -34,16 +44,6 @@ pipeline {
             steps {
                 bat 'curl http://localhost:5000/'
             }
-        }
-    }
-}
-stage('Test') {
-    steps {
-        bat 'copy sample-app\\test-results.xml test-results.xml'
-    }
-    post {
-        always {
-            junit 'test-results.xml'
         }
     }
 }
